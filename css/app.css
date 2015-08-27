@@ -60,7 +60,7 @@ h2 {
     overflow: hidden;
     z-index: 1;
     height: 70vh;
-    background: url("images/road-header.jpg") no-repeat;
+    background: url("../images/road-header.jpg") no-repeat;
     background-attachment: fixed;
     background-size: cover;
     background-position: bottom;
