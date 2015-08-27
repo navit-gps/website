@@ -297,7 +297,7 @@ img.grayscale {
 
 .home_pana_container {
     height: 200px;
-    background: url("/images/footer.jpg") no-repeat fixed;
+    background: url("../images/footer.jpg") no-repeat fixed;
     width: calc(100% + 30px);
     background-size: 100%;
 }
