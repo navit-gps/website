@@ -1,0 +1,26 @@
+title: Navit
+email: info@navit-project.org
+contact-email: info@navit-project.org
+author: Navit Team # Default Author
+description: "TBD"
+
+includes_dir: .
+url: "file:///home/jan/git/website/_site/"
+
+permalink: posts/:title.html
+
+paginate: 10
+paginate_path: "/blog/page:num/"
+
+future: false
+
+# Build settings
+markdown: kramdown
+gems:
+  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-assets
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor/bundle
