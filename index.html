@@ -405,22 +405,40 @@ ext-css:
 										<div class='title'>
 											<h3>Windows</h3>
 										</div>
-										
 										<div class='features'>
 											<div class='feature'>
 												<img src="assets/images/windows.png" alt="windows" />
 											</div>
-											
 										</div>
-										<div class='footer'>
-                      <div class="cmo-button-wrapper clearfix align-">
-                        <a class="cmo-button shortcodebuttons  medium shape-round  " id="cmo-button-63" href="https://github.com/navit-gps/navit/releases/download/v0.5.0/navit-0.5.0.exe"><span>DOWNLOAD</span></a>
-                      </div>
+                    <div class='footer'>
+                      <!-- That part will be filled using javascript on the page load-->
+                      <div class="cmo-button-wrapper clearfix align" id="download-windows-section"></div>
+                    </div>
+                  </div>
+                  <div class="vc_empty_space" style="height: 32px">
+                    <span class="vc_empty_space_inner"></span>
+                  </div>
+								</div>
+							</div>
+							<div class="wpb_column vc_column_container vc_col-sm-3">
+								<div class="wpb_wrapper">
+									<div class='cmo-pricing-column style2 featured wow bounceIn' id='cmo-content-box-33'>
+										<div class='title'>
+											<h3>Navitom</h3>
 										</div>
-									</div>
-									<div class="vc_empty_space" style="height: 32px">
-										<span class="vc_empty_space_inner"></span>
-									</div>
+										<div class='features'>
+											<div class='feature'>
+												<img src="assets/images/logo.png" alt="navitom" />
+											</div>
+										</div>
+                    <div class='footer'>
+                      <!-- That part will be filled using javascript on the page load-->
+                      <div class="cmo-button-wrapper clearfix align" id="download-navitom-section"></div>
+                    </div>
+                  </div>
+                  <div class="vc_empty_space" style="height: 32px">
+                    <span class="vc_empty_space_inner"></span>
+                  </div>
 								</div>
 							</div>
 							<div class="wpb_column vc_column_container vc_col-sm-3">
@@ -429,17 +447,14 @@ ext-css:
 										<div class='title'>
 											<h3>SOURCE CODE</h3>
 										</div>
-										
 										<div class='features'>
 											<div class='feature'>
 												<img src="assets/images/code.png" alt="source code" />
 											</div>
-											
 										</div>
 										<div class='footer'>
-                      <div class="cmo-button-wrapper clearfix align-">
-                        <a class="cmo-button shortcodebuttons  medium shape-round" id="cmo-button-63" href="https://github.com/navit-gps/navit/releases/latest"><span>VIEW CODE</span></a>
-                      </div>
+                      <!-- That part will be filled using javascript on the page load-->
+                      <div class="cmo-button-wrapper clearfix align" id="download-source-section"></div>
 										</div>
 									</div>
 									<div class="vc_empty_space" style="height: 32px">
@@ -936,29 +951,65 @@ ext-css:
 <script type='text/javascript' src='assets/js/skrollr.min.js'></script>
 <script type='text/javascript' src='assets/js/contact-form.js'></script>
 <script type="text/javascript">
-	/* This updates the download inks dynamically */
+  /* This updates the download inks dynamically */
   jQuery(document).ready(function ($) {
     $.getJSON("https://api.github.com/repos/navit-gps/navit/releases", function(json) {
       var release = json[0];
-      /* $("#download-apk-section").text(release.tag_name); */
+      /* Add the links for the source */
+      $("#download-source-section").html('<div class="cmo-button-wrapper clearfix align"><a class="cmo-button shortcodebuttons medium shape-round" id="cmo-button-63" href="https://github.com/navit-gps/navit/tree/'+ release.tag_name +'"><span>BROWSE CODE</span></a> </div>');
+      $("#download-source-section").append($("<div />").addClass("separator").css("height","10px"));
+      $("#download-source-section").append('<div class="cmo-button-wrapper clearfix align"><a class="cmo-button shortcodebuttons medium shape-round" id="cmo-button-63" href="https://github.com/navit-gps/navit/archive/'+ release.tag_name +'.zip"><span>DOWNLOAD AS ZIP</span></a> </div>');
+      $("#download-source-section").append($("<div />").addClass("separator").css("height","10px"));
+      $("#download-source-section").append('<div class="cmo-button-wrapper clearfix align"><a class="cmo-button shortcodebuttons medium shape-round" id="cmo-button-63" href="https://github.com/navit-gps/navit/archive/'+ release.tag_name +'.tar.gz"><span>DOWNLOAD AS TARBALL</span></a> </div>');
+
+      /* Add the links for the the assets attached to the release */
       $.each(release.assets, function (idx, asset) {
         var extension = asset.name.slice((asset.name.lastIndexOf(".") - 1 >>> 0) + 2);
         var link = $("<a />").addClass("cmo-button shortcodebuttons medium shape-round");
         var btn = $("<span />");
         var sep = $("<div />").addClass("separator").css("height","10px");
+        var buttonlbl = "GET THE ";
         switch(extension){
           case "apk":
-            var buttonlbl = "GET THE ";
             if(asset.name.includes("debug")){buttonlbl += "DEBUG ";}
             if(asset.name.includes("x86")){buttonlbl += "x86 ";}
             if(asset.name.includes("arm")){buttonlbl += "ARM ";}
             if(buttonlbl  == "GET THE "){buttonlbl += asset.name;} else {buttonlbl += "APK";}
-            console.log(buttonlbl);
             link.attr("href", asset.browser_download_url);
             btn.text(buttonlbl);
             link.append(btn);
             $("#download-apk-section").append(link);
             $("#download-apk-section").append(sep);
+            break;
+          case "exe":
+            buttonlbl += "EXE ";
+            if(asset.name.includes("wince")){buttonlbl += "WINCE";}
+            if(buttonlbl  == "GET THE EXE "){buttonlbl += "WIN32";}
+            link.attr("href", asset.browser_download_url);
+            btn.text(buttonlbl);
+            link.append(btn);
+            $("#download-windows-section").append(link);
+            $("#download-windows-section").append(sep);
+            break;
+          case "zip":
+            if(asset.name.includes("wince")){
+              buttonlbl += "ZIP FOR WINCE";
+              link.attr("href", asset.browser_download_url);
+              btn.text(buttonlbl);
+              link.append(btn);
+              $("#download-windows-section").append(link);
+              $("#download-windows-section").append(sep);
+              break;
+            }
+            if(asset.name.includes("navitom")){
+              buttonlbl = "GET NAVITOM ";
+              if(asset.name.includes("minimal")){buttonlbl += "MINIMAL";}
+              link.attr("href", asset.browser_download_url);
+              btn.text(buttonlbl);
+              link.append(btn);
+              $("#download-navitom-section").append(link);
+              $("#download-navitom-section").append(sep);
+            }
             break;
         }
       });
