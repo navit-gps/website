@@ -5,7 +5,7 @@ author: Navit Team # Default Author
 description: "TBD"
 
 includes_dir: .
-url: "file:///home/jan/git/website/_site/"
+url: ""
 
 permalink: posts/:title.html
 
